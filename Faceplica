@@ -1,0 +1,43 @@
+# Faceplica — aedificatio xiterm
+#
+# Usus:
+#   face            — aedifica xiterm
+#   face purga      — dele omnia aedificata
+#
+# Requirit: phantasma installata in /opt/apotheca
+
+CC      ?= cc
+CFLAGS  ?= -Wall -Wextra -pedantic -std=c99 -O2
+
+PREFIX      = /opt/apotheca
+PHANTASMA   = $(PREFIX)/lib/libphantasma.a
+OBJECTA     = xiterm.o pty.o
+
+omnia: xiterm titulus_genera
+
+xiterm.o: xiterm.c pty.h
+	$(CC) $(CFLAGS) -I$(PREFIX)/include -c xiterm.c -o xiterm.o
+
+pty.o: pty.c pty.h
+	$(CC) $(CFLAGS) -c pty.c -o pty.o
+
+xiterm: $(OBJECTA) $(PHANTASMA)
+	$(CC) $(OBJECTA) $(PHANTASMA) `cat $(PREFIX)/lib/nexus_phantasma` -o xiterm
+
+titulus_genera.o: titulus_genera.c
+	$(CC) $(CFLAGS) -I$(PREFIX)/include -c titulus_genera.c -o titulus_genera.o
+
+titulus_genera: titulus_genera.o $(PHANTASMA)
+	$(CC) titulus_genera.o $(PHANTASMA) `cat $(PREFIX)/lib/nexus_phantasma` -o titulus_genera
+
+titulus_16.gif: titulus_genera
+	./titulus_genera
+
+colloca: omnia
+	install -d $(PREFIX)/bin
+	install -m 755 xiterm $(PREFIX)/bin/
+
+purga:
+	rm -f $(OBJECTA) xiterm titulus_genera.o titulus_genera titulus_16.gif
+
+.PHONY: omnia colloca purga
