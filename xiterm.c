@@ -118,8 +118,8 @@ static void glyphos_praecalcula(void)
 {
     glyph_lat_s = GLYPH_LAT * scala / 16;
     glyph_alt_s = GLYPH_ALT * scala / 16;
-    int blk = 16 / scala;
-    int blk2 = blk * blk;
+    int blk     = 16 / scala;
+    int blk2    = blk * blk;
 
     for (int ch = 0; ch < 256; ch++) {
         uint32_t *g = glyphi[ch];
@@ -129,12 +129,12 @@ static void glyphos_praecalcula(void)
         for (int oy = 0; oy < glyph_alt_s; oy++) {
             for (int ox = 0; ox < glyph_lat_s; ox++) {
                 uint32_t sr = 0, sg = 0, sb = 0;
-                int n_opac = 0;
+                int n_opac  = 0;
 
                 for (int by = 0; by < blk; by++) {
                     for (int bx = 0; bx < blk; bx++) {
-                        int ax = base_x + ox * blk + bx;
-                        int ay = base_y + oy * blk + by;
+                        int ax     = base_x + ox * blk + bx;
+                        int ay     = base_y + oy * blk + by;
                         uint32_t p = atlas[ay * ATLAS_LAT + ax];
                         if ((p >> 24) != 0 && (p & 0x00FFFFFF) != 0) {
                             sr += (p >> 16) & 0xFF;
@@ -272,7 +272,12 @@ static void linea_nova(void)
 static void sgr_exsequere(void)
 {
     /* colores ANSI ignorantur — color est proprietas fontis.
-     * solum inverse (7) et reset (0) tractantur. */
+     * solum inverse (7) et reset (0) tractantur.
+     * \x1b[m sine parametris aequivalet \x1b[0m. */
+    if (term.n_params == 0) {
+        term.attr = 0;
+        return;
+    }
     for (int i = 0; i < term.n_params; i++) {
         int p = term.params[i];
         if (p == 0) {
