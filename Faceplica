@@ -13,7 +13,7 @@ PREFIX      = /opt/apotheca
 PHANTASMA   = $(PREFIX)/lib/libphantasma.a
 OBJECTA     = xiterm.o pty.o
 CAPITA      = pty.h
-LITTERAE      = mork_16.gif titulus_16.gif they_16.gif
+LITTERAE    = mork_16.gif titulus_16.gif they_16.gif ahoy_16.gif
 
 omnia: xiterm titulus_genera mork_genera they_genera $(LITTERAE)
 
