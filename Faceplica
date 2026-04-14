@@ -13,8 +13,9 @@ PREFIX      = /opt/apotheca
 PHANTASMA   = $(PREFIX)/lib/libphantasma.a
 OBJECTA     = xiterm.o pty.o
 CAPITA      = pty.h
+LITTERAE      = mork_16.gif titulus_16.gif they_16.gif
 
-omnia: xiterm titulus_genera mork_genera they_genera mork_16.gif they_16.gif titulus_16.gif
+omnia: xiterm titulus_genera mork_genera they_genera $(LITTERAE)
 
 xiterm.o: xiterm.c $(CAPITA)
 	$(CC) $(CFLAGS) -I$(PREFIX)/include -c xiterm.c -o xiterm.o
@@ -55,6 +56,8 @@ they_16.gif: they_genera
 colloca: omnia
 	install -d $(PREFIX)/bin
 	install -m 755 xiterm $(PREFIX)/bin/
+	install -d $(PREFIX)/var/xiterm
+	install -m 644 $(LITTERAE) $(PREFIX)/var/xiterm/
 
 purga:
 	rm -f $(OBJECTA) xiterm titulus_genera.o titulus_genera titulus_16.gif \
