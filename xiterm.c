@@ -890,7 +890,9 @@ static void redimensiona(
 
 int main(int argc, char **argv)
 {
-    const char *via_fontis = "mork_16.gif";
+    const char *nomen_fontis = NULL;
+    const char *via_fontis   = NULL;
+    static char via_buf[512];
     scala = SCALA_PRAE;
 
     for (int i = 1; i < argc; i++) {
@@ -898,9 +900,33 @@ int main(int argc, char **argv)
             scala = atoi(argv[++i]);
             if (scala < 1 || scala > 16 || (scala & (scala - 1)) != 0)
                 scala = SCALA_PRAE;
+        } else if (strcmp(argv[i], "-f") == 0 && i + 1 < argc) {
+            if (via_fontis) {
+                fprintf(stderr, "xiterm: -f et -F incompatibiles sunt\n");
+                return 1;
+            }
+            nomen_fontis = argv[++i];
+        } else if (strcmp(argv[i], "-F") == 0 && i + 1 < argc) {
+            if (nomen_fontis) {
+                fprintf(stderr, "xiterm: -f et -F incompatibiles sunt\n");
+                return 1;
+            }
+            via_fontis = argv[++i];
         } else {
-            via_fontis = argv[i];
+            fprintf(stderr, "xiterm: argumentum ignotum: %s\n", argv[i]);
+            return 1;
         }
+    }
+
+    if (!nomen_fontis && !via_fontis)
+        nomen_fontis = "mork";
+
+    if (nomen_fontis) {
+        snprintf(
+            via_buf, sizeof(via_buf),
+            "/opt/apotheca/var/xiterm/%s_16.gif", nomen_fontis
+        );
+        via_fontis = via_buf;
     }
 
     /* terminalis initia */
