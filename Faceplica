@@ -12,13 +12,14 @@ CFLAGS  ?= -Wall -Wextra -pedantic -std=c99 -O2
 PREFIX      = /opt/apotheca
 PHANTASMA   = $(PREFIX)/lib/libphantasma.a
 OBJECTA     = xiterm.o pty.o
+CAPITA      = pty.h
 
-omnia: xiterm titulus_genera
+omnia: xiterm titulus_genera mork_genera they_genera mork_16.gif they_16.gif titulus_16.gif
 
-xiterm.o: xiterm.c pty.h
+xiterm.o: xiterm.c $(CAPITA)
 	$(CC) $(CFLAGS) -I$(PREFIX)/include -c xiterm.c -o xiterm.o
 
-pty.o: pty.c pty.h
+pty.o: pty.c $(CAPITA)
 	$(CC) $(CFLAGS) -c pty.c -o pty.o
 
 xiterm: $(OBJECTA) $(PHANTASMA)
@@ -30,14 +31,33 @@ titulus_genera.o: titulus_genera.c
 titulus_genera: titulus_genera.o $(PHANTASMA)
 	$(CC) titulus_genera.o $(PHANTASMA) `cat $(PREFIX)/lib/nexus_phantasma` -o titulus_genera
 
+mork_genera.o: mork_genera.c
+	$(CC) $(CFLAGS) -I$(PREFIX)/include -c mork_genera.c -o mork_genera.o
+
+mork_genera: mork_genera.o $(PHANTASMA)
+	$(CC) mork_genera.o $(PHANTASMA) `cat $(PREFIX)/lib/nexus_phantasma` -o mork_genera
+
+they_genera.o: they_genera.c
+	$(CC) $(CFLAGS) -I$(PREFIX)/include -c they_genera.c -o they_genera.o
+
+they_genera: they_genera.o $(PHANTASMA)
+	$(CC) they_genera.o $(PHANTASMA) `cat $(PREFIX)/lib/nexus_phantasma` -o they_genera
+
 titulus_16.gif: titulus_genera
 	./titulus_genera
+
+mork_16.gif: mork_genera
+	./mork_genera
+
+they_16.gif: they_genera
+	./they_genera
 
 colloca: omnia
 	install -d $(PREFIX)/bin
 	install -m 755 xiterm $(PREFIX)/bin/
 
 purga:
-	rm -f $(OBJECTA) xiterm titulus_genera.o titulus_genera titulus_16.gif
+	rm -f $(OBJECTA) xiterm titulus_genera.o titulus_genera titulus_16.gif \
+		mork_genera.o mork_genera they_genera.o they_genera
 
 .PHONY: omnia colloca purga
