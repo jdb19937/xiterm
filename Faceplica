@@ -6,9 +6,6 @@
 #
 # Requirit: phantasma installata in /opt/apotheca
 
-CC      ?= cc
-CFLAGS  ?= -Wall -Wextra -pedantic -std=c99 -O2
-
 PREFIX      = /opt/apotheca
 PHANTASMA   = $(PREFIX)/lib/libphantasma.a
 OBJECTA     = xiterm.o pty.o
@@ -18,31 +15,31 @@ LITTERAE    = mork_16.gif titulus_16.gif they_16.gif ahoy_16.gif
 omnia: xiterm titulus_genera mork_genera they_genera $(LITTERAE)
 
 xiterm.o: xiterm.c $(CAPITA)
-	$(CC) $(CFLAGS) -I$(PREFIX)/include -c xiterm.c -o xiterm.o
+	ccc -I/opt/apotheca/include $<
 
 pty.o: pty.c $(CAPITA)
-	$(CC) $(CFLAGS) -c pty.c -o pty.o
+	ccc $<
 
-xiterm: $(OBJECTA) $(PHANTASMA)
-	$(CC) $(OBJECTA) $(PHANTASMA) `cat $(PREFIX)/lib/nexus_phantasma` -o xiterm
+xiterm: xiterm.o pty.o $(PHANTASMA)
+	ldi `cat $(PREFIX)/lib/nexus_phantasma` $^
 
 titulus_genera.o: titulus_genera.c
-	$(CC) $(CFLAGS) -I$(PREFIX)/include -c titulus_genera.c -o titulus_genera.o
+	ccc -I/opt/apotheca/include $<
 
 titulus_genera: titulus_genera.o $(PHANTASMA)
-	$(CC) titulus_genera.o $(PHANTASMA) `cat $(PREFIX)/lib/nexus_phantasma` -o titulus_genera
+	ldi `cat $(PREFIX)/lib/nexus_phantasma` $^
 
 mork_genera.o: mork_genera.c
-	$(CC) $(CFLAGS) -I$(PREFIX)/include -c mork_genera.c -o mork_genera.o
+	ccc -I/opt/apotheca/include $<
 
 mork_genera: mork_genera.o $(PHANTASMA)
-	$(CC) mork_genera.o $(PHANTASMA) `cat $(PREFIX)/lib/nexus_phantasma` -o mork_genera
+	ldi `cat $(PREFIX)/lib/nexus_phantasma` $^
 
 they_genera.o: they_genera.c
-	$(CC) $(CFLAGS) -I$(PREFIX)/include -c they_genera.c -o they_genera.o
+	ccc -I/opt/apotheca/include $<
 
 they_genera: they_genera.o $(PHANTASMA)
-	$(CC) they_genera.o $(PHANTASMA) `cat $(PREFIX)/lib/nexus_phantasma` -o they_genera
+	ldi `cat $(PREFIX)/lib/nexus_phantasma` $^
 
 titulus_16.gif: titulus_genera
 	./titulus_genera
@@ -60,7 +57,8 @@ colloca: omnia
 	install -m 644 $(LITTERAE) $(PREFIX)/var/xiterm/
 
 purga:
-	rm -f $(OBJECTA) xiterm titulus_genera.o titulus_genera titulus_16.gif \
+	rm -f $(OBJECTA) xiterm titulus_genera.o titulus_genera \
+		mork_16.gif they_16.gif titulus_16.gif \
 		mork_genera.o mork_genera they_genera.o they_genera
 
 .PHONY: omnia colloca purga

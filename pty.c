@@ -68,10 +68,7 @@ pid_t pty_forca(
         if (s < 0)
             _exit(127);
 
-#ifdef TIOCSCTTY
-        /* in quibusdam systematibus necessarium */
         ioctl(s, TIOCSCTTY, 0);
-#endif
 
         /* attributa terminalis pone */
         if (tp)

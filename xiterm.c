@@ -1052,6 +1052,8 @@ int main(int argc, char **argv)
             }
         }
 
+        pfr_pausa(5);
+
         /* redde et praesenta */
         if (pix && textura) {
             redde(pix);
@@ -1060,8 +1062,6 @@ int main(int argc, char **argv)
             pfr_texturam_pinge(pictor, textura, NULL, NULL);
             pfr_praesenta(pictor);
         }
-
-        pfr_pausa(16);
     }
 
     free(pix);
