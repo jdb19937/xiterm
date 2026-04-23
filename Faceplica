@@ -61,4 +61,7 @@ purga:
 		mork_16.gif they_16.gif titulus_16.gif \
 		mork_genera.o mork_genera they_genera.o they_genera
 
-.PHONY: omnia colloca purga
+linte:
+	insinulint -c *.c *.h
+
+.PHONY: omnia colloca purga linte
